@@ -1,146 +1,201 @@
 "use client"
 
-import { Link } from "react-router-dom"
-import { ThemeToggle } from "./theme-toggle"
-import { useState } from "react"
-
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { motion, AnimatePresence } from 'framer-motion'
+import { useTheme } from './theme-provider'
+import { Sun, Moon, Menu, X } from 'lucide-react'
+import { Button } from './ui/button'
 
 const navigation = [
-  { name: "Home", href: "/" },
-  { name: "About", href: "/about" },
-  { name: "Services", href: "/services" },
-  { name: "Cases", href: "/cases" },
-  { name: "Blog", href: "/blog" },
-  { name: "Career", href: "/career" },
-  { name: "Contact", href: "/contact" },
+  { name: 'Home', href: '/' },
+  { name: 'About', href: '/about' },
+  { name: 'Services', href: '/services' },
+  { name: 'Cases', href: '/cases' },
+  { name: 'Blog', href: '/blog' },
+  { name: 'Career', href: '/career' },
+  { name: 'Contact', href: '/contact' },
 ]
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => setMounted(true), [])
+
+  const menuVariants = {
+    closed: {
+      opacity: 0,
+      height: 0,
+      transition: {
+        duration: 0.3,
+        staggerChildren: 0.05,
+        staggerDirection: -1
+      }
+    },
+    open: {
+      opacity: 1,
+      height: "100vh",
+      transition: {
+        duration: 0.3,
+        staggerChildren: 0.05,
+        delayChildren: 0.1
+      }
+    }
+  }
+
+  const itemVariants = {
+    closed: {
+      x: -20,
+      opacity: 0
+    },
+    open: {
+      x: 0,
+      opacity: 1
+    }
+  }
 
   return (
-    <nav className="bg-background/80 backdrop-blur-md border-b sticky top-0 z-50 shadow-lg">
+    <nav className="fixed top-0 inset-x-0 z-50 backdrop-blur-lg bg-background/80 border-b border-border/50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
-          <div className="flex">
-            <div className="flex-shrink-0 flex items-center">
-              <Link 
-                to="/" 
-                className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/50 
-                         bg-clip-text text-transparent hover:scale-105 transition-all"
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link to="/" className="flex items-center">
+            <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
+              CrossCult
+            </span>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <div className="hidden sm:flex sm:items-center sm:space-x-8">
+            {navigation.map((item) => (
+              <Link
+                key={item.name}
+                to={item.href}
+                className="group px-3 py-2 text-sm font-medium relative overflow-hidden rounded-lg
+                         hover:bg-primary/5 active:scale-95 transition-all duration-300"
               >
-                CrossCult
+                <span className="relative z-10">{item.name}</span>
+                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-primary scale-x-0 
+                               group-hover:scale-x-100 transition-transform duration-300" />
               </Link>
-            </div>
-            <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-              {navigation.map((item) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  className="inline-flex items-center px-1 pt-1 text-sm font-medium 
-                           text-foreground hover:text-primary 
-                           relative after:absolute after:bottom-0 after:left-0 after:right-0 
-                           after:h-0.5 after:bg-primary after:scale-x-0 
-                           hover:after:scale-x-100 after:transition-transform"
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <ThemeToggle />
-            <div className="sm:hidden">
-              <button
-                onClick={() => setIsOpen(!isOpen)}
-                className="relative w-10 h-10 rounded-full bg-primary/10 
-                         hover:bg-primary/20 transition-colors"
+            ))}
+            
+            {mounted && (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                className="ml-4"
               >
-                <span className="sr-only">Open main menu</span>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-6 h-6 flex flex-col justify-center gap-1.5 transition-all">
-                    <span 
-                      className={`block h-0.5 w-6 bg-foreground transform transition-all duration-300
-                                ${isOpen ? 'rotate-45 translate-y-2' : ''}`}
-                    />
-                    <span 
-                      className={`block h-0.5 bg-foreground transform transition-all duration-300
-                                ${isOpen ? 'w-0' : 'w-6'}`}
-                    />
-                    <span 
-                      className={`block h-0.5 w-6 bg-foreground transform transition-all duration-300
-                                ${isOpen ? '-rotate-45 -translate-y-2' : ''}`}
-                    />
-                  </div>
-                </div>
-              </button>
-            </div>
+                {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              </Button>
+            )}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <div className="sm:hidden">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setIsOpen(!isOpen)}
+              className="relative z-50"
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={isOpen ? 'close' : 'menu'}
+                  initial={{ opacity: 0, rotate: -90 }}
+                  animate={{ opacity: 1, rotate: 0 }}
+                  exit={{ opacity: 0, rotate: 90 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+                </motion.div>
+              </AnimatePresence>
+            </Button>
           </div>
         </div>
       </div>
 
-      {/* Mobile menu */}
-      <div 
-        className={`sm:hidden fixed inset-x-0 top-16 bg-background/95 backdrop-blur-lg
-                   transform transition-all duration-500 ease-in-out border-b
-                   ${isOpen ? 'translate-y-0 opacity-100 h-[calc(100vh-4rem)]' : '-translate-y-full opacity-0 h-0'}`}
-      >
-        <div className={`h-full flex flex-col ${isOpen ? 'animate-in fade-in-50 duration-500' : ''}`}>
-          <div className="px-4 py-6 flex-1 overflow-y-auto">
-            <div className="grid gap-y-8">
-              {navigation.map((item, index) => (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  style={{ 
-                    animationDelay: `${(index + 1) * 100}ms`,
-                    animationFillMode: 'forwards'
-                  }}
-                  className={`group flex items-center py-3 text-base font-medium 
-                           relative overflow-hidden rounded-xl
-                           ${isOpen ? 'animate-in slide-in-from-left-8 duration-300' : ''}
-                           hover:bg-primary/5 active:scale-98 transition-all`}
-                  onClick={() => setIsOpen(false)}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent opacity-0 
-                                group-hover:opacity-100 transition-opacity" />
-                  <span className="relative flex items-center">
-                    <span className="mr-4 text-primary opacity-0 group-hover:opacity-100 
-                                   transition-all duration-300 transform -translate-x-4 
-                                   group-hover:translate-x-0">
-                      •
-                    </span>
-                    <span className="transform transition-transform duration-300 
-                                   group-hover:translate-x-2">
-                      {item.name}
-                    </span>
-                  </span>
-                </Link>
-              ))}
-            </div>
-          </div>
-          <div className="px-4 py-6 border-t border-border/50 bg-muted/20 animate-in fade-in-50 duration-700 delay-500">
-            <div className="flex flex-col gap-4">
-              <p className="text-sm text-muted-foreground relative overflow-hidden">
-                Ready to start your journey?
-                <span className="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-primary/50 via-primary to-primary/50 
-                               transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-              </p>
-              <Link
-                to="/contact"
-                onClick={() => setIsOpen(false)}
-                className="flex items-center justify-center px-4 py-3 rounded-xl 
-                         bg-primary text-primary-foreground relative overflow-hidden
-                         hover:shadow-lg hover:shadow-primary/25 active:scale-95 transition-all"
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial="closed"
+            animate="open"
+            exit="closed"
+            variants={menuVariants}
+            className="fixed inset-0 top-16 bg-background/95 backdrop-blur-xl sm:hidden"
+          >
+            <div className="flex flex-col h-full">
+              <motion.div className="flex-1 px-4 py-8 overflow-y-auto">
+                <div className="grid gap-y-8">
+                  {navigation.map((item, index) => (
+                    <motion.div
+                      key={item.name}
+                      variants={itemVariants}
+                      custom={index}
+                    >
+                      <Link
+                        to={item.href}
+                        className="group flex items-center py-3 px-4 text-lg font-medium 
+                                 relative overflow-hidden rounded-xl
+                                 hover:bg-primary/5 active:scale-95 transition-all"
+                        onClick={() => setIsOpen(false)}
+                      >
+                        <motion.div
+                          initial={{ x: -20, opacity: 0 }}
+                          animate={{ x: 0, opacity: 1 }}
+                          transition={{ delay: index * 0.1 }}
+                          className="relative flex items-center w-full"
+                        >
+                          <span className="absolute left-0 w-2 h-2 rounded-full bg-primary 
+                                       transform scale-0 group-hover:scale-100 transition-transform" />
+                          <span className="ml-6 transform transition-transform duration-300 
+                                       group-hover:translate-x-2">
+                            {item.name}
+                          </span>
+                        </motion.div>
+                      </Link>
+                    </motion.div>
+                  ))}
+                </div>
+              </motion.div>
+
+              {/* Mobile Menu Footer */}
+              <motion.div
+                variants={itemVariants}
+                className="px-4 py-6 border-t border-border/50 bg-muted/20"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent opacity-0 
-                              hover:opacity-100 transition-opacity" />
-                <span className="relative">Get Started</span>
-              </Link>
+                <div className="flex flex-col gap-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-muted-foreground">Switch theme</span>
+                    {mounted && (
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                      >
+                        {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+                      </Button>
+                    )}
+                  </div>
+                  <Link
+                    to="/contact"
+                    onClick={() => setIsOpen(false)}
+                    className="flex items-center justify-center px-4 py-3 rounded-xl 
+                             bg-primary text-primary-foreground
+                             hover:bg-primary/90 active:scale-95 transition-all"
+                  >
+                    Get Started
+                  </Link>
+                </div>
+              </motion.div>
             </div>
-          </div>
-        </div>
-      </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </nav>
   )
 }

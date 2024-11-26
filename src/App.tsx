@@ -8,22 +8,25 @@ import Cases from './app/cases/page'
 import Blog from './app/blog/page'
 import Career from './app/career/page'
 import Contact from './app/contact/page'
+import { ErrorBoundary } from './components/ErrorBoundary'
 
 function App() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/services" element={<Services />} />
-        <Route path="/cases" element={<Cases />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/career" element={<Career />} />
-        <Route path="/contact" element={<Contact />} />
-      </Routes>
-      <Footer />
-    </div>
+    <ErrorBoundary>
+      <div className="min-h-screen bg-background text-foreground">
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Services />} />
+          <Route path="/cases" element={<Cases />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/career" element={<Career />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
+        <Footer />
+      </div>
+    </ErrorBoundary>
   )
 }
 
