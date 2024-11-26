@@ -32,8 +32,8 @@ export function InteractiveCards({
       rotation: [0, i * Math.PI / count, 0] as [number, number, number]
     })), [count, spacing])
 
-  const [springs, api] = useSpring(() => ({
-    rotation: [0, 0, 0],
+  const [springs] = useSpring(() => ({
+    rotation: [0, 0, 0] as [number, number, number],
     config: { mass: 5, tension: 350, friction: 40 }
   }))
 
@@ -51,9 +51,7 @@ export function InteractiveCards({
   return (
     <animated.group
       ref={group}
-      rotation-x={springs.rotation[0]}
-      rotation-y={springs.rotation[1]}
-      rotation-z={springs.rotation[2]}
+      rotation={springs.rotation as any}
     >
       {cards.map((card, i) => (
         <Float

@@ -16,7 +16,7 @@ export function FloatingText({
   color = "#8B5CF6",
   emissiveIntensity = 0.4
 }: FloatingTextProps) {
-  const meshRef = useRef<THREE.Mesh>(null!)
+  const groupRef = useRef<THREE.Group>(null!)
   
   const [springs] = useSpring(() => ({
     rotation: [0, 0, 0],
@@ -26,7 +26,7 @@ export function FloatingText({
 
   return (
     <animated.group
-      ref={meshRef}
+      ref={groupRef}
       scale={scale}
       rotation={springs.rotation as any}
       position={springs.position as any}

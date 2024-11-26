@@ -1,8 +1,10 @@
 interface PartnerLogoProps {
   name: string;
+  logo: string;
+  index?: number;
 }
 
-export function PartnerLogo({ name }: PartnerLogoProps) {
+export function PartnerLogo({ name, logo, index }: PartnerLogoProps) {
   return (
     <div className="group relative overflow-hidden rounded-xl p-6 hover-lift press-effect
                     bg-gradient-to-br from-background to-muted/50">

@@ -1,23 +1,9 @@
+import { motion } from "framer-motion"
 import { TeamMember } from "@/components/team-member"
 import { PartnerLogo } from "@/components/partner-logo"
 import { PageLayout } from "@/components/page-layout"
-import { motion, useScroll, useTransform } from "framer-motion"
-import { Canvas } from '@react-three/fiber'
-import { Suspense, useRef } from "react"
-import { OrbitControls, Float } from '@react-three/drei'
-import { Particles } from "@/components/three/Particles"
-import { FloatingText } from "@/components/three/FloatingText"
-import { GradientSphere } from "@/components/three/GradientSphere"
 
 export default function About() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end start"]
-  })
-
-  const y = useTransform(scrollYProgress, [0, 1], [0, 200])
-
   return (
     <PageLayout 
       title="Innovation, Technologies, Creativity"
