@@ -1,11 +1,9 @@
 interface TeamMemberProps {
   name: string;
   role: string;
-  image: string;
-  index?: number;
 }
 
-export function TeamMember({ name, role, image, index }: TeamMemberProps) {
+export function TeamMember({ name, role }: TeamMemberProps) {
   return (
     <div className="group relative overflow-hidden rounded-xl p-6 hover-lift press-effect
                     bg-gradient-to-br from-background to-muted/50">

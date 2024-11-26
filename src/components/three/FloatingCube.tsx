@@ -34,7 +34,7 @@ export function FloatingCube({
       roughness: 0.2
     }), [color, opacity, wireframe])
 
-  useFrame((state, delta) => {
+  useFrame((state) => {
     const time = state.clock.getElapsedTime()
     mesh.current.rotation.x = Math.sin(time) * rotationSpeed
     mesh.current.rotation.y = Math.cos(time) * rotationSpeed

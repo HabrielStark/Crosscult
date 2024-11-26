@@ -1,14 +1,12 @@
 import { useRef } from 'react'
-import { useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { Text3D, Float } from '@react-three/drei'
 import { useSpring, animated } from '@react-spring/three'
 
 export function InteractiveLogo() {
   const meshRef = useRef<THREE.Group>(null!)
-  const { mouse } = useThree()
 
-  const [springs, api] = useSpring(() => ({
+  const [springs] = useSpring(() => ({
     position: [0, 0, 0] as [number, number, number],
     rotation: [0, 0, 0] as [number, number, number],
     config: { mass: 1, tension: 280, friction: 60 }
@@ -17,8 +15,8 @@ export function InteractiveLogo() {
   return (
     <animated.group
       ref={meshRef}
-      position={springs.position}
-      rotation={springs.rotation}
+      position={springs.position as any}
+      rotation={springs.rotation as any}
     >
       <Float 
         speed={2}

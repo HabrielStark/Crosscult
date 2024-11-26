@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { motion, useScroll, useTransform } from "framer-motion"
-import { Mail, MapPin, Lock, FileText, Calendar, Phone, Send } from 'lucide-react'
+import { Mail, MapPin, Lock, FileText, Calendar, Send } from 'lucide-react'
 import { PageLayout } from "@/components/page-layout"
 import { Canvas } from '@react-three/fiber'
 import { Suspense, useRef } from "react"

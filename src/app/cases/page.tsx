@@ -1,7 +1,7 @@
 import { PageLayout } from "@/components/page-layout"
 import { motion, useScroll, useTransform } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, ExternalLink, Star, Users, TrendingUp } from "lucide-react"
+import { ArrowRight, ExternalLink } from "lucide-react"
 import { Canvas } from '@react-three/fiber'
 import { Suspense, useRef } from "react"
 import { OrbitControls, Float } from '@react-three/drei'
@@ -12,7 +12,7 @@ export default function Cases() {
   const containerRef = useRef<HTMLDivElement>(null)
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start start", "end start"]
+    offset: ["start end", "end end"]
   })
 
   const y = useTransform(scrollYProgress, [0, 1], [0, 200])

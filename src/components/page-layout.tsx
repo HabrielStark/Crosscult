@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react'
-import { motion, useScroll as useFramerScroll, useTransform } from "framer-motion"
+import { motion } from "framer-motion"
 
 const ThreeCanvas = lazy(() => import('@react-three/fiber').then(mod => ({ default: mod.Canvas })))
 const OrbitControls = lazy(() => import('@react-three/drei').then(mod => ({ default: mod.OrbitControls })))
@@ -21,9 +21,6 @@ export function PageLayout({
   showParticles = true,
   showSphere = false
 }: PageLayoutProps) {
-  const { scrollYProgress } = useFramerScroll()
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
-
   return (
     <main className="min-h-screen pt-20 pb-16 relative overflow-hidden">
       {/* Title Section */}
@@ -34,7 +31,7 @@ export function PageLayout({
         transition={{ duration: 0.5 }}
       >
         <h1 className="text-4xl md:text-6xl font-bold mb-6 bg-clip-text text-transparent 
-                     bg-gradient-to-r from-primary to-primary/60 dark:from-primary dark:to-primary/60">
+                     bg-gradient-to-r from-primary to-primary/60">
           {title}
         </h1>
         {subtitle && (
@@ -57,8 +54,17 @@ export function PageLayout({
       {/* Background Grid */}
       <div className="fixed inset-0 -z-20 
                     bg-[linear-gradient(to_right,#4f4f4f1a_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f1a_1px,transparent_1px)]
-                    dark:bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] 
                     bg-[size:14px_24px]" />
+
+      {showParticles && (
+        <Suspense fallback={null}>
+          <ThreeCanvas>
+            <OrbitControls enableZoom={false} />
+            <Particles count={500} />
+            {showSphere && <GradientSphere />}
+          </ThreeCanvas>
+        </Suspense>
+      )}
     </main>
   )
 } 

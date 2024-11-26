@@ -21,11 +21,11 @@ export default function About() {
             Our Team
           </motion.h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {teamMembers.map((member, index) => (
+            {teamMembers.map((member) => (
               <TeamMember
                 key={member.name}
-                {...member}
-                index={index}
+                name={member.name}
+                role={member.role}
               />
             ))}
           </div>
@@ -70,11 +70,10 @@ export default function About() {
             Our Partners
           </motion.h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {partners.map((partner, index) => (
+            {partners.map((partner) => (
               <PartnerLogo
                 key={partner.name}
-                {...partner}
-                index={index}
+                name={partner.name}
               />
             ))}
           </div>

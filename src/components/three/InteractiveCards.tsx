@@ -1,5 +1,5 @@
-import { useRef, useMemo } from 'react'
-import { useFrame, useThree } from '@react-three/fiber'
+import { useRef, useMemo, useEffect } from 'react'
+import { useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { Float, GradientTexture } from '@react-three/drei'
 import { useSpring, animated } from '@react-spring/three'
@@ -20,7 +20,8 @@ export function InteractiveCards({
   scale = [1.5, 2]
 }: InteractiveCardsProps) {
   const group = useRef<THREE.Group>(null!)
-  const { mouse, viewport } = useThree()
+  const { mouse } = useThree()
+  const clock = useRef(new THREE.Clock())
 
   const cards = useMemo(() => 
     Array.from({ length: count }, (_, i) => ({
@@ -32,13 +33,13 @@ export function InteractiveCards({
       rotation: [0, i * Math.PI / count, 0] as [number, number, number]
     })), [count, spacing])
 
-  const [springs] = useSpring(() => ({
+  const [springs, api] = useSpring(() => ({
     rotation: [0, 0, 0] as [number, number, number],
     config: { mass: 5, tension: 350, friction: 40 }
   }))
 
-  useFrame((state) => {
-    const time = state.clock.getElapsedTime()
+  useEffect(() => {
+    const time = clock.current.getElapsedTime()
     api.start({
       rotation: [
         mouse.y * 0.1,
@@ -46,7 +47,7 @@ export function InteractiveCards({
         0
       ]
     })
-  })
+  }, [mouse, api])
 
   return (
     <animated.group

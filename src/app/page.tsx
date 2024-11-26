@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { motion, useScroll, useSpring } from "framer-motion"
+import { motion } from "framer-motion"
 import { ArrowRight, ChevronDown } from "lucide-react"
 import { Canvas } from '@react-three/fiber'
 import { useRef, Suspense } from "react"
@@ -12,16 +12,6 @@ import { Particles } from "@/components/three/Particles"
 
 export default function Home() {
   const scrollRef = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({
-    target: scrollRef,
-    offset: ["start start", "end start"]
-  })
-
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 30,
-    restDelta: 0.001
-  })
 
   return (
     <div className="min-h-screen">

@@ -1,7 +1,7 @@
 import { PageLayout } from "@/components/page-layout"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
-import { ArrowRight, MapPin, Clock, Briefcase, CheckCircle } from "lucide-react"
+import { ArrowRight, MapPin, Clock, Briefcase } from "lucide-react"
 import { Canvas } from '@react-three/fiber'
 import { Suspense } from "react"
 import { OrbitControls } from '@react-three/drei'

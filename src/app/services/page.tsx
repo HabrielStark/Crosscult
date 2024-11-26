@@ -6,7 +6,6 @@ import {
   TrendingUp, 
   Globe2, 
   Palette, 
-  Rocket, 
   Zap, 
   BarChart3,
   CheckCircle,

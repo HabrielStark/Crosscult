@@ -1,10 +1,8 @@
 import { useRef } from 'react'
-import { useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useSpring, animated } from '@react-spring/three'
 
 export function InteractiveBackground() {
-  const { mouse } = useThree()
   const group = useRef<THREE.Group>(null!)
 
   const [spring] = useSpring(() => ({
